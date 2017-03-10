@@ -101,7 +101,7 @@ preferences {
         	
             }
         standardTile("input2", "device.tv", width: 2, height: 2, decoration: "flat"){
-        	 state "OFF", label: 'TV Audio', action: "tv", icon:"st.Electronics.electronics18", backgroundColor:"#FFFFFF",nextState:"ON" 
+        	 state "OFF", label: 'TV', action: "tv", icon:"st.Electronics.electronics18", backgroundColor:"#FFFFFF",nextState:"ON" 
              state "ON", label: 'TV', action: "tv", icon:"st.Electronics.electronics18", backgroundColor: "#53a7c0", nextState:"OFF"      
                 
             }
@@ -111,13 +111,13 @@ preferences {
             
         	}
         standardTile("input4", "device.dvd", width: 2, height: 2, decoration: "flat"){
-        	state "OFF", label: 'DVD', action: "dvd", icon:"st.Electronics.electronics14", backgroundColor: "#FFFFFF",nextState:"ON"   
-            state "ON", label: 'DVD', action: "dvd", icon:"st.Electronics.electronics14", backgroundColor: "#53a7c0", nextState:"OFF"  
+        	state "OFF", label: 'Chromcast', action: "dvd", icon:"st.Electronics.electronics14", backgroundColor: "#FFFFFF",nextState:"ON"   
+            state "ON", label: 'Chromcast', action: "dvd", icon:"st.Electronics.electronics14", backgroundColor: "#53a7c0", nextState:"OFF"  
              
         	}
 		standardTile("input5", "device.mp", width: 2, height: 2, decoration: "flat"){
-        	state "OFF", label: 'Media Player', action: "mp", icon:"st.Electronics.electronics9", backgroundColor: "#FFFFFF",nextState:"ON"   
-            state "ON", label: 'Media Player', action: "mp", icon:"st.Electronics.electronics9", backgroundColor: "#53a7c0", nextState:"OFF"   
+        	state "OFF", label: 'Amazon TV', action: "mp", icon:"st.Electronics.electronics9", backgroundColor: "#FFFFFF",nextState:"ON"   
+            state "ON", label: 'Amazon TV', action: "mp", icon:"st.Electronics.electronics9", backgroundColor: "#53a7c0", nextState:"OFF"   
             
 			}
         standardTile("input6", "device.bt", width: 2, height: 2, decoration: "flat"){
@@ -132,7 +132,8 @@ preferences {
 			}               
 		standardTile("input10", "device.sound", width: 2, height: 2, decoration: "flat"){
         	state "sMusic", label: '${currentValue}', action:"sMusic", icon:"st.Entertainment.entertainment3", backgroundColor: "#FFFFFF", nextState:"sMovie"
-			state "sMovie", label: '${currentValue}', action:"sMovie", icon:"st.Entertainment.entertainment9", backgroundColor: "#FFFFFF", nextState:"sPure"
+			state "sMovie", label: '${currentValue}', action:"sMovie", icon:"st.Entertainment.entertainment9", backgroundColor: "#FFFFFF", nextState:"sGame"
+			state "sGame", label: '${currentValue}', action:"sGame", icon:"st.Electronics.electronics6", backgroundColor: "#FFFFFF", nextState:"sPure"
 			state "sPure", label: '${currentValue}', action:"sPure", icon:"st.Entertainment.entertainment15", backgroundColor: "#FFFFFF", nextState:"sMusic"
             }            
 
@@ -255,6 +256,7 @@ def game() {
     syncTiles(cmd)
     request("cmd0=PutZone_InputFunction%2F"+cmd)
 }
+//SOUND MODES
 def sMusic() {
 	def cmd = "MUSIC"
     log.debug "Setting input to '${cmd}'"
@@ -265,6 +267,12 @@ def sMovie() {
     log.debug "Setting input to '${cmd}'"
     request("cmd0=PutSurroundMode%2F"+cmd)
 }
+def sGame() {
+	def cmd = "GAME"
+    log.debug "Setting input to '${cmd}'"
+    request("cmd0=PutSurroundMode%2F"+cmd)
+}
+
 def sPure() {
 	def cmd = "PURE DIRECT"
     log.debug "Setting input to '${cmd}'"
@@ -289,7 +297,7 @@ def syncTiles(cmd){
    		else sendEvent(name: "bt", value: "OFF")						
 	if (cmd == "GAME") sendEvent(name: "game", value: "ON")	 
    		else sendEvent(name: "game", value: "OFF")
-	refresh()
+	//refresh()
 }
 
 def refresh() {
