@@ -234,12 +234,12 @@ def parse(String description) {
     def z2on() {
         log.debug "Turning on Zone 2"
         sendEvent(name: "zone2", value: "ON")
-        request('cmd0=PutZone_OnOff%2FON&ZoneName=ZONE2')
+        request2('cmd0=PutZone_OnOff%2FON')
         }
     def z2off() {
         log.debug "Turning off Zone 2"
         sendEvent(name: "zone2", value: "OFF")
-        request('cmd0=PutZone_OnOff%2FON&ZoneName=ZONE2')
+        request2('cmd0=PutZone_OnOff%2FOFF')
         }
     def mute() { 
         sendEvent(name: "mute", value: "muted")
@@ -397,6 +397,22 @@ def parse(String description) {
 
         hubAction
     }
+    def request2(body) { 
+        def hosthex = convertIPtoHex(destIp)
+        def porthex = convertPortToHex(destPort)
+        device.deviceNetworkId = "$hosthex:$porthex" 
+
+        def hubAction = new physicalgraph.device.HubAction(
+                'method': 'POST',
+                'path': "/Zone2/index.put.asp",
+                'body': body,
+                'headers': [ HOST: "$destIp:$destPort" ]
+            ) 
+
+        hubAction
+    }
+    
+    
     private String convertIPtoHex(ipAddress) { 
         String hex = ipAddress.tokenize( '.' ).collect {  String.format( '%02X', it.toInteger() ) }.join()
         return hex
