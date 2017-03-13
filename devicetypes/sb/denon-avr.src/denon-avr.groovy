@@ -69,7 +69,10 @@ metadata {
 		command "q2"
 		command "q3"
 		command "q4"
-		command "sPure"        
+		command "sPure" 
+		command "z2on"        
+		command "z2off"        
+
         }
 
 
